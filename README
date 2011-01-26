@@ -1,0 +1,1 @@
+Very simple HTTP service exposing PowerShell, just call it like this http://srv:port/?cmd=get-service | ? {$_.Name -like "*Time*"}

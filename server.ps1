@@ -9,23 +9,32 @@ while (1) {
     $ctx = $http.GetContext()
     
     $res = "Gimme Powershell Please!"  
+    
     $ctx.Request.RawUrl
+    $ctx.Request.QueryString
     
-    $query = $ctx.Request.RawUrl -replace "%20", " " -replace "%22", "'"
+    $query = $ctx.Request.QueryString;
     
-    if ( $query -match "^/\?cmd=(.*)" ) {
+    if ( $query[ "cmd" ] ) {
         
-        $error.clear()
+        $error.clear()        
+        $query[ "cmd" ]
         
-        $matches[1]
-        $res = iex $matches[1] | Out-String
+        $res = iex $query[ "cmd" ] | Out-String
         
         if($error) {            
             $res = $error | Out-String            
         }
     }
 
+    $func = $query['callback']   
+    
+    $res = $res -replace "\\", "\\" -replace "\r\n", "\n" -replace "'", '"'   
+    $res = "$func('" + $res + "');"
+    
     $buffer = [System.Text.Encoding]::UTF8.GetBytes($res)
+    
+    $ctx.Response.Headers[ "Content-Type" ] = "text/javascript";
     
     $ctx.Response.OutputStream.Write( $buffer, 0, $buffer.Length )
     $ctx.Response.OutputStream.Close()

@@ -1,6 +1,5 @@
 $http = New-Object System.Net.HttpListener
-
-$http.Prefixes.Add( $args[0] )
+$http.Prefixes.Add( "http://$($env:computername):$($args[0])/" )
 $http.Start()
 
 while (1) {

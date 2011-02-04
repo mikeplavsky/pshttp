@@ -2,31 +2,36 @@ $http = New-Object System.Net.HttpListener
 $http.Prefixes.Add( "http://$($env:computername):$($args[0])/" )
 $http.Start()
 
+filter log () {
+     "$(Get-Date)`t$_" | Out-File log.txt -Append
+}
+
 while (1) {
 
-    "Listening...."
+    "Listening...." | log
 
     $ctx = $http.GetContext()
     
+    $ctx.Request.RawUrl | log
+    $ctx.Request.RemoteEndPoint.Address | log
+    
+    
     $res = "Gimme Powershell Please!"  
-    
-    $ctx.Request.RawUrl
-    $ctx.Request.QueryString
-    
     $query = $ctx.Request.QueryString;
     
     if ( $query[ "cmd" ] ) {
         
         $error.clear()        
-        $query[ "cmd" ]
+        $query[ "cmd" ] | log
         
-        $res = iex $query[ "cmd" ] | Out-String
+        $t = measure-command {$res = iex $query[ "cmd" ] | Out-String}
+        "time to run: $t" | log
         
         if($error) {            
             $res = $error | Out-String            
         }
     }
-
+    
     $func = $query['callback']   
     
     $res = $res -replace "\\", "\\" -replace "\r\n", "\n" -replace "'", '"'   
@@ -39,6 +44,6 @@ while (1) {
     $ctx.Response.OutputStream.Write( $buffer, 0, $buffer.Length )
     $ctx.Response.OutputStream.Close()
     
-    "Done"
+    "Done" | log
   
 }

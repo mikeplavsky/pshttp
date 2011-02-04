@@ -1,9 +1,15 @@
+$location = gl
+
 $http = New-Object System.Net.HttpListener
 $http.Prefixes.Add( "http://$($env:computername):$($args[0])/" )
 $http.Start()
 
+
+
 filter log () {
-     "$(Get-Date)`t$_" | Out-File log.txt -Append
+    Push-Location $location
+    "$(Get-Date)`t$_" | Out-File log.txt -Append     
+    Pop-Location
 }
 
 while (1) {
@@ -17,7 +23,7 @@ while (1) {
     
     
     $res = "Gimme Powershell Please!"  
-    $query = $ctx.Request.QueryString;
+    $query = $ctx.Request.QueryString
     
     if ( $query[ "cmd" ] ) {
         

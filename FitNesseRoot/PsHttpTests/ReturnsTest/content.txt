@@ -1,0 +1,5 @@
+-|script|
+|pshttp|gl|
+|show|eval|$res|
+|check|eval|$res|=~/^giveIt\('\\nPath\s*\\n/|
+|check|eval|$res|=~/C:\\\\/|

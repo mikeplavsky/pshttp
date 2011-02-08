@@ -1,22 +1,30 @@
 $location = gl
 
-$http = New-Object System.Net.HttpListener
-$http.Prefixes.Add( "http://$($env:computername):$($args[0])/" )
-$http.Start()
-
-
-
 filter log () {
     Push-Location $location
     "$(Get-Date)`t$_" | Out-File log.txt -Append     
     Pop-Location
 }
 
-while (1) {
+$http = New-Object System.Net.HttpListener
+$http.Prefixes.Add( "http://$($env:computername):$($args[0])/" )
+
+$error.clear()        
+$http.Start()
+
+
+if($error) {
+    $error | log
+    return 
+}
+
+do {
 
     "Listening...." | log
-
+    
+    
     $ctx = $http.GetContext()
+    
     
     $ctx.Request.RawUrl | log
     $ctx.Request.RemoteEndPoint.Address | log
@@ -52,4 +60,4 @@ while (1) {
     
     "Done" | log
   
-}
+} while (1)

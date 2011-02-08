@@ -1,1 +1,14 @@
+slim.ps1
 log.txt
+fitnesse.jar
+
+FitNesseRoot/FitNesse/
+FitNesseRoot/FrontPage/
+FitNesseRoot/PageFooter/
+FitNesseRoot/PageHeader/
+FitNesseRoot/RecentChanges/
+FitNesseRoot/files/
+FitNesseRoot/properties
+FitNesseRoot/updateDoNotCopyOverList
+FitNesseRoot/updateList
+FitNesseRoot/ErrorLogs

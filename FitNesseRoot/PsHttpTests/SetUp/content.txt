@@ -9,7 +9,8 @@
 |eval|$p = start powershell "-NonInteractive -ExecutionPolicy unrestricted -file $path $port" -PassThru|
 
 |scenario|curl _                           |url                          |
-|check|eval    |!-$res = curl @url -!|/__VOID__/|
+|eval|$url = @url -replace "\s", "%20"|
+|check|eval    |!-$res = curl $url -!|/__VOID__/|
 
 !|scenario|pshttp|cmd|
 |curl|"http://spb9503:$port/?cmd=@cmd&callback=$func"|

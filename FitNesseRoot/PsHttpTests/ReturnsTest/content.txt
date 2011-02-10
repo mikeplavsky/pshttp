@@ -1,5 +1,7 @@
 -|script|
-|pshttp|gl|
-|show|eval|$res|
-|check|eval|$res|=~/^giveIt\('\\nPath\s*\\n/|
-|check|eval|$res|=~/C:\\\\/|
+|eval  |rm test.txt                       |
+|eval  |!-"'"|Out-File test.txt -Append -!|
+|eval  |!-'"'|Out-File test.txt -Append -!|
+|eval  |!-"\"|Out-File test.txt -Append -!|
+|pshttp|gc test.txt                       |
+|check |eval |$res |giveIt('"\n"\n\\\n'); |

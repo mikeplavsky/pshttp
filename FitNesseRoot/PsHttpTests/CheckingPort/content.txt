@@ -18,3 +18,8 @@
 
 -|script|
 |check|eval|$p1.HasExited|True|
+
+-|script|
+|pshttp|`$x|
+|check|eval|$res|giveIt('10\n');|
+

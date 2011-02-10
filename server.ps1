@@ -18,7 +18,7 @@ if($error) {
     return 
 }
 
-do {
+while (1) {
 
     "Listening...." | log
     
@@ -60,4 +60,4 @@ do {
     
     "Done" | log
   
-} while (1)
+}

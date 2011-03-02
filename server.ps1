@@ -48,12 +48,15 @@ while (1) {
     
     $func = $query['callback']   
     
-    $res = $res -replace "\\", "\\" -replace "\r\n", "\n" -replace "'", '"'   
-    $res = "$func('" + $res + "');"
+    if ( !($args[1] -eq 'text' ) ) {
+    
+        $res = $res -replace "\\", "\\" -replace "\r\n", "\n" -replace "'", '"'   
+        $res = "$func('" + $res + "');"    
+        $ctx.Response.Headers[ "Content-Type" ] = "text/javascript";
+        
+    }
     
     $buffer = [System.Text.Encoding]::UTF8.GetBytes($res)
-    
-    $ctx.Response.Headers[ "Content-Type" ] = "text/javascript";
     
     $ctx.Response.OutputStream.Write( $buffer, 0, $buffer.Length )
     $ctx.Response.OutputStream.Close()

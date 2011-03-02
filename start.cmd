@@ -1,2 +1,2 @@
-PowerShell -NonInteractive -ExecutionPolicy unrestricted -file server.ps1 35
+PowerShell -NonInteractive -ExecutionPolicy unrestricted -file server.ps1 35 text
 pause

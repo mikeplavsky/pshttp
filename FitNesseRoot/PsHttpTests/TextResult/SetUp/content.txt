@@ -1,0 +1,16 @@
+|script|
+|eval|$port1=37|
+|eval|$dir="c:\pshttp"|
+|eval|$path="$dir\server.ps1"|
+|eval|$log="$dir\log.txt"|
+|eval|$func="giveIt"|
+
+|script|
+|eval|$p = start powershell "-NonInteractive -ExecutionPolicy unrestricted -file $path $port1 text" -PassThru|
+
+|scenario|curl _                           |url                          |
+|eval|$url = @url -replace "\s", "%20"|
+|check|eval    |!-$res = curl $url -!||
+
+!|scenario|pshttp|cmd|
+|curl|"http://spb9503:$port1/?cmd=@cmd&callback=$func"|

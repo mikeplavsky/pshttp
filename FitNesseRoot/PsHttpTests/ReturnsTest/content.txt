@@ -1,7 +1,0 @@
--|script|
-|eval  |rm test.txt                       |
-|eval  |!-"'"|Out-File test.txt -Append -!|
-|eval  |!-'"'|Out-File test.txt -Append -!|
-|eval  |!-"\"|Out-File test.txt -Append -!|
-|pshttp|gc test.txt                       |
-|check |eval |$res |giveIt('"\n"\n\\\n'); |

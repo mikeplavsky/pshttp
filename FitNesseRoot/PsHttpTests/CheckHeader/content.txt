@@ -1,3 +1,0 @@
--|script|
-|check|eval|!-curl -I "http://spb9503:$port/?cmd=gl&callback=$func"-!|=~/Content-Type: text/javascript/|
-

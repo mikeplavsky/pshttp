@@ -1,0 +1,4 @@
+-|script|
+|eval|!-[Console]::OutputEncoding = New-Object System.Text.Utf8Encoding-!|
+|pshttp|!-'%u041F%u0440%u0438%u0432%u0435%u0442'-!|
+|check|eval                 |$res                |Привет|

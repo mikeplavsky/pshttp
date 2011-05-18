@@ -1,0 +1,7 @@
+|scenario|curl _                           |url                          |
+|eval|$url = @url -replace "\s", "%20"|
+|check|eval    |!-$res = [string]::join( " ", (curl $url) ) -!||
+|show|eval|$res|
+
+!|scenario|pshttp|cmd|
+|curl|"http://spb9503:$port/?cmd=@cmd&callback=$func"|

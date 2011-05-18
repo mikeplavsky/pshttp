@@ -1,4 +1,5 @@
 !define TEST_SYSTEM {slim}
 !define COMMAND_PATTERN (PowerShell -NonInteractive -ExecutionPolicy unrestricted -file .\slim.ps1)
+!define SLIM_PORT {0}
 
 !contents -R2 -g -p -f -h

@@ -1,14 +1,15 @@
 -|script                    |
 |pshttp|gl                  |
-|show|eval|$res|
-|check|eval|$res|=~/pshttp/|
+|show  |eval|$res           |
+|check |eval|$res|=~/pshttp/|
 
 -|script                                         |
-|pshttp|Get-Service                              |
-|check|eval|!-$res -match "$func\('.*'\)"-!|True|
-|check|eval|!-$res -match 'Workstation'-!  |True|
+|pshttp|Get-Service                               |
+|show  |eval|$res.GetType().Name            |     |
+|check |eval|!-$res -match "$func\('.*'\)"-!|False|
+|check |eval|!-$res -match 'Workstation'-!  |True |
 
 
 -|script|
-|pshttp|Add-Computer|
-|check|eval|$res -match 'missing mandatory'|True|
+|pshttp|Add-Computer                             |
+|check |eval|$res -match 'missing mandatory'|True|
